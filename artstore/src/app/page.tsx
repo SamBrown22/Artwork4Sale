@@ -1,4 +1,5 @@
-import Image from "next/image";
+/* eslint-disable react/no-unescaped-entities */
+import Image from "next/image"
 
 export default function Home() {
   return (
@@ -12,22 +13,27 @@ export default function Home() {
           height={38}
           priority
         />
-        <h1 className="text-4xl font-bold text-center sm:text-left">Discover Unique Art Pieces</h1>
+        <h1 className="text-center text-4xl font-bold sm:text-left">
+          Discover Unique Art Pieces
+        </h1>
         <p className="text-center text-lg sm:text-left">
-          Explore a curated collection of artwork from talented artists. Discover pieces that inspire and bring beauty into your space.
+          Explore a curated collection of artwork from talented artists.
+          Discover pieces that inspire and bring beauty into your space.
         </p>
 
         {/* Featured Artworks */}
         <div className="grid gap-8 sm:grid-cols-2">
           <div className="flex flex-col items-center">
-            <Image 
+            <Image
               src="/placeholder.png"
               alt="Featured Artwork 1"
               width={300}
               height={400}
               className="rounded-lg shadow-lg"
             />
-            <p className="mt-4 text-lg font-semibold">"Sunset Bliss" by Artist Name</p>
+            <p className="mt-4 text-lg font-semibold">
+              "Sunset Bliss" by Artist Name
+            </p>
             <p className="text-sm text-gray-600">$200.00</p>
           </div>
           <div className="flex flex-col items-center">
@@ -38,7 +44,9 @@ export default function Home() {
               height={400}
               className="rounded-lg shadow-lg"
             />
-            <p className="mt-4 text-lg font-semibold">"Ethereal Dreams" by Artist Name</p>
+            <p className="mt-4 text-lg font-semibold">
+              "Ethereal Dreams" by Artist Name
+            </p>
             <p className="text-sm text-gray-600">$300.00</p>
           </div>
         </div>
@@ -46,7 +54,7 @@ export default function Home() {
         {/* Call to Action */}
         <div className="flex flex-col items-center gap-4 sm:flex-row">
           <a
-            className="bg-primary text-white flex h-10 items-center justify-center rounded-full px-4 text-sm transition-colors hover:bg-blue-700 sm:h-12 sm:px-5 sm:text-base"
+            className="transition-color hover flex h-10 items-center justify-center rounded-full bg-primary px-4 text-sm text-white sm:h-12 sm:px-5 sm:text-base"
             href="/shop"
           >
             Shop All Artworks
@@ -54,5 +62,5 @@ export default function Home() {
         </div>
       </main>
     </div>
-  );
+  )
 }

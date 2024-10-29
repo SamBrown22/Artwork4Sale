@@ -2,3 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  color: var(--text-color);
+  transition: color 1s ease; /* Smooth transitions */
+}

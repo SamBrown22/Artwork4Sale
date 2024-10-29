@@ -1,14 +1,7 @@
 import type { Metadata } from "next"
-import localFont from "next/font/local"
-
 import Taskbar from "../components/Taskbar"
 import "../styles/globals.css"
-
-const geistMono = localFont({
-  src: "../../public/fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-})
+import { Providers } from "./providers"
 
 export const metadata: Metadata = {
   title: "Artwork4Sale",
@@ -17,16 +10,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={`${geistMono.variable} antialiased`}>
-        <Taskbar />
-        <main className="p-4 max-w-7xl m-auto min-w-[300px]">
-          {children}
-        </main>
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <Providers>
+          <Taskbar />
+          <main className="m-auto min-w-[300px] max-w-7xl p-4">{children}</main>
+        </Providers>
       </body>
     </html>
   )
