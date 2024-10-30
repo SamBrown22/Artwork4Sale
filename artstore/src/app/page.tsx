@@ -1,26 +1,17 @@
 /* eslint-disable react/no-unescaped-entities */
-import Image from "next/image"
+// src/app/page.tsx
+
+import Image from "next/image";
+import HeroSection from "@/components/HeroSection";
 
 export default function Home() {
   return (
-    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
+    <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <main className="row-start-2 flex flex-col items-center gap-8 sm:items-start">
-        <Image
-          src="/placeholder.png"
-          alt="Art Gallery Logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <h1 className="text-center text-4xl font-bold sm:text-left">
-          Discover Unique Art Pieces
-        </h1>
-        <p className="text-center text-lg sm:text-left">
-          Explore a curated collection of artwork from talented artists.
-          Discover pieces that inspire and bring beauty into your space.
-        </p>
+      <HeroSection />
 
+      {/* Main Content */}
+      <main className="flex flex-col items-center gap-16 p-8 pb-20 sm:p-20">
         {/* Featured Artworks */}
         <div className="grid gap-8 sm:grid-cols-2">
           <div className="flex flex-col items-center">
@@ -54,7 +45,7 @@ export default function Home() {
         {/* Call to Action */}
         <div className="flex flex-col items-center gap-4 sm:flex-row">
           <a
-            className="transition-color hover flex h-10 items-center justify-center rounded-full bg-primary px-4 text-sm text-white sm:h-12 sm:px-5 sm:text-base"
+            className="flex h-10 items-center justify-center rounded-full bg-primary px-4 text-sm text-white sm:h-12 sm:px-5 sm:text-base hover:bg-primary-dark transition-colors"
             href="/shop"
           >
             Shop All Artworks
@@ -62,5 +53,5 @@ export default function Home() {
         </div>
       </main>
     </div>
-  )
+  );
 }

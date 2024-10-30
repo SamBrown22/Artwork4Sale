@@ -16,7 +16,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <Taskbar />
-          <main className="m-auto min-w-[300px] max-w-7xl p-4">{children}</main>
+          <main className="m-auto min-w-[300px] max-w-full p-4">{children}</main>
         </Providers>
       </body>
     </html>
