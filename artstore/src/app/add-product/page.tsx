@@ -33,7 +33,7 @@ export default function AddProductPage() {
           placeholder="Price"
           className="input input-bordered mb-3 w-full"
         />
-        <button className="btn btn-primary btn-block" type="submit">
+        <button className="btn btn-primary btn-block text-white" type="submit">
           Add Product
         </button>
       </form>

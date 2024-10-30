@@ -12,6 +12,7 @@ const config: Config = {
       {
         light: {
           primary: "#7e00ff",
+          "primary-content": "#4b0296",
           secondary: "#00f200",
           accent: "#bf8200",
           neutral: "#090a00",
@@ -26,6 +27,7 @@ const config: Config = {
       {
         dark: {
           primary: "#7e00ff",
+          "primary-content": "#4b0296",
           secondary: "#00f200",
           accent: "#bf8200",
           neutral: "#090a00",

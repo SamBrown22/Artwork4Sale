@@ -13,12 +13,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="h-screen">
         <Providers>
           <Taskbar />
-          <main className="m-auto min-w-[300px] max-w-full p-4">{children}</main>
+          <main className="m-auto min-w-[300px] max-w-full p-4 lg:h-[calc(100vh-96px)] h-[calc(100vh-80px)]">
+            {children}
+          </main>
         </Providers>
       </body>
     </html>
-  )
+  );
 }

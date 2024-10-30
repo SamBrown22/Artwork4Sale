@@ -10,7 +10,7 @@ import Sidebar from "./Sidebar"
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Add product", href: "/add-product" },
-  { name: "Contact", href: "#contact" },
+  { name: "Login", href: "/signup-login"},
 ]
 
 function Taskbar() {
@@ -33,7 +33,7 @@ function Taskbar() {
     ))
 
   return (
-    <div className="taskbar bg-base-300 p-4 shadow-md">
+    <div className="taskbar bg-base-300 p-4 shadow-md max-h-24 min-h-20">
       <nav className="flex items-center justify-between">
         {/* Group ThemeButton and heading in a div */}
         <div className="flex items-center">
