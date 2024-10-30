@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 const HeroSection = () => {
   return (
-    <div className="relative -mx-4 w-screen -my-4 my-1">
+    <div className="relative -mx-4 w-screen -my-4">
       {/* Banner Image */}
       <Image
         src="/images/Banner.jpg"
@@ -17,7 +17,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-base-300/60 to-base-300/20"></div>
 
       {/* Text Container */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-inverse-base px-4 max-w-4xl m-auto">
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 max-w-4xl m-auto">
         <h1 className="text-4xl font-bold sm:text-5xl lg:text-6xl">
           Discover Unique Art Pieces
         </h1>
