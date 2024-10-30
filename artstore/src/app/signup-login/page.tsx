@@ -34,14 +34,14 @@ const AuthPage = () => {
             isRegister ? "sm:translate-x-full" : "sm:translate-x-0"
           }`}
         >
-          <h2 className="mb-8 text-3xl font-bold text-base-content underline">
+          <h2 className="mb-6 text-3xl font-bold text-base-content underline">
             {isRegister ? "Register" : "Login"}
           </h2>
-          <div className="w-full max-w-xs space-y-4">
+          <div className="w-full max-w-xs">
             {isRegister ? <RegisterForm /> : <LoginForm />}
           </div>
           <p className="mt-4 text-sm text-base-content">
-            {isRegister ? "Already have an account?" : "Don’t have an account?"}{" "}
+            {isRegister ? "Already have an account?" : "Don't have an account?"}{" "}
             <button
               type="button"
               onClick={() => setIsRegister(!isRegister)}

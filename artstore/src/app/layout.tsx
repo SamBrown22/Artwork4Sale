@@ -16,11 +16,11 @@ export default function RootLayout({
       <body className="h-screen">
         <Providers>
           <Taskbar />
-          <main className="m-auto min-w-[300px] max-w-full p-4 lg:h-[calc(100vh-96px)] h-[calc(100vh-80px)]">
+          <main className="m-auto h-[calc(100vh-80px)] min-w-[300px] max-w-full p-4 lg:h-[calc(100vh-96px)]">
             {children}
           </main>
         </Providers>
       </body>
     </html>
-  );
+  )
 }

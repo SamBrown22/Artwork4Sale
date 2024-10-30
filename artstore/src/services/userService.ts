@@ -28,3 +28,42 @@ export async function addUser(formData: FormData) {
 
   redirect("/")
 }
+
+// services/userService.js
+export async function loginUser(formData: FormData) {
+    const email = formData.get("email")?.toString();
+    const password = formData.get("password")?.toString();
+  
+    // Perform validation
+    if (!email || !password) {
+      return { error: "Please fill out all fields." }; // Return error message
+    }
+  
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+  
+    if (!user) {
+        const error = {
+            type:'userError',
+            message: "User not found."
+        }
+      return {error}; // Return error message
+    }
+  
+    const passwordMatch = await bcrypt.compare(password, user.password);
+  
+    if (!passwordMatch) {
+        const error = {
+            type:'passwordError',
+            message: "Invalid Password."
+        }
+      return {error}; // Return error message
+    }
+  
+    console.log("Logged in as", user.username);
+    redirect("/"); // Perform redirect on successful login
+  }
+  
