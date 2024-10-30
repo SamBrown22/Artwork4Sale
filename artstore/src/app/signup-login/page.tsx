@@ -1,9 +1,8 @@
-// AuthPage.js
 "use client"
 
 import { useState } from "react"
-import RegisterForm from "@/components/RegisterForm" // Ensure the import path is correct
-import LoginForm from "@/components/LoginForm" // Ensure the import path is correct
+import RegisterForm from "@/components/RegisterForm"
+import LoginForm from "@/components/LoginForm"
 
 const AuthPage = () => {
   const [isRegister, setIsRegister] = useState(false)
@@ -14,9 +13,7 @@ const AuthPage = () => {
         {/* Photo Section for Register */}
         <div
           className={`absolute inset-y-0 left-0 hidden w-1/2 bg-[url('/images/register-image.jpg')] bg-cover bg-center transition-all duration-700 ease-in-out sm:block ${
-            isRegister
-              ? "translate-x-0 opacity-100"
-              : "translate-x-full opacity-0"
+            isRegister ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
           }`}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-[#1f1f1f]/90 to-[#0f0f0f]/10"></div>
@@ -24,10 +21,8 @@ const AuthPage = () => {
 
         {/* Photo Section for Login */}
         <div
-          className={`absolute inset-y-0 right-0 hidden w-1/2 bg-[url('/images/login-image.jpg')] bg-cover bg-center transition-all duration-00 ease-in-out sm:block ${
-            isRegister
-              ? "-translate-x-full opacity-0"
-              : "translate-x-0 opacity-100"
+          className={`absolute inset-y-0 right-0 hidden w-1/2 bg-[url('/images/login-image.jpg')] bg-cover bg-center transition-all duration-700 ease-in-out sm:block ${
+            isRegister ? "-translate-x-full opacity-0" : "translate-x-0 opacity-100"
           }`}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-[#1f1f1f]/90 to-[#0f0f0f]/10"></div>
@@ -42,12 +37,13 @@ const AuthPage = () => {
           <h2 className="mb-8 text-3xl font-bold text-base-content underline">
             {isRegister ? "Register" : "Login"}
           </h2>
-          <form className="w-full max-w-xs space-y-4">
+          <div className="w-full max-w-xs space-y-4">
             {isRegister ? <RegisterForm /> : <LoginForm />}
-          </form>
+          </div>
           <p className="mt-4 text-sm text-base-content">
             {isRegister ? "Already have an account?" : "Don’t have an account?"}{" "}
             <button
+              type="button"
               onClick={() => setIsRegister(!isRegister)}
               className="font-semibold text-primary hover:underline"
             >
