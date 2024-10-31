@@ -10,6 +10,7 @@ const navigation = [
   { name: "Home", href: "/", alwaysVisible: true }, // Always visible
   { name: "Add Product", href: "/add-product", loggedInOnly: true }, // Visible only when logged in
   { name: "Login", href: "/signup-login", loggedOutOnly: true }, // Visible only when logged out
+  {name: 'My Profile', href: '/myProfile', loggedInOnly: true}, // Visible only when logged in
   { name: "Logout", href: "/", loggedInOnly: true, action: "logout" }, // Visible only when logged in and triggers logout
 ]
 
