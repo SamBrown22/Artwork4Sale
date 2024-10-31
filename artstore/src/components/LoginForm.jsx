@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 import { useState } from "react"
 import { signIn } from "next-auth/react"
+import { redirect } from "next/navigation"
 
 const LoginForm = () => {
   const [error, setError] = useState({ message: "", field: "" }) // State to store error messages
@@ -19,6 +19,7 @@ const LoginForm = () => {
       redirect: false, // Do not redirect after sign-in
       email, // Pass email
       password, // Pass password
+      callbackUrl: "/", // Redirect to home page after sign-in
     })
 
     console.log(res)
@@ -34,8 +35,8 @@ const LoginForm = () => {
         setError({ message: res.error, field: "null" })
       }
     } else {
-      // Redirect to the success page (e.g., dashboard) on successful login
-      Router.push("/dashboard")
+      setError({ message: "", field: "" })
+      redirect(res.url); // Redirect to the URL returned by signIn
     }
   }
 
@@ -50,7 +51,6 @@ const LoginForm = () => {
           type="email"
           className="w-full rounded-md border border-base-content bg-base-200 p-2 focus:border-primary focus:bg-base-300 focus:outline-none"
           placeholder="Enter email"
-          required
         />
 
         {/* Show error message for userError, directly below the email input */}
@@ -67,7 +67,6 @@ const LoginForm = () => {
           type="password"
           className="w-full rounded-md border border-base-content bg-base-200 p-2 focus:border-primary focus:bg-base-300 focus:outline-none"
           placeholder="Enter password"
-          required
         />
 
         {/* Show error message for passwordError, directly below the password input */}
