@@ -4,15 +4,9 @@ import React from "react"
 import { useSession } from "next-auth/react"
 
 function ProfilePage() {
-  const { data: session, status } = useSession()
+  const { data: session} = useSession()
 
-  // Show a loading state while the session status is loading
-  if (status === "loading") {
-    return <p>Loading...</p>
-  }
-
-  // Render profile content only if user is authenticated
-  if (status === "authenticated") {
+  if (session) {
     return (
       <div className="profile-page p-6">
         <h1 className="text-2xl font-bold">Welcome, {session.user?.name || "User"}!</h1>
@@ -21,9 +15,6 @@ function ProfilePage() {
       </div>
     )
   }
-
-  // If the user is unauthenticated, NextAuth will automatically redirect them to the sign-in page
-  return null
 }
 
 export default ProfilePage
