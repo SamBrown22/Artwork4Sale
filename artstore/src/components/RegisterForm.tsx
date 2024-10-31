@@ -1,9 +1,23 @@
-// RegisterForm.jsx
-import { addUser } from "@/services/userService";
+import { useRouter } from 'next/navigation';
+import { addUser } from "@/services/userService"; // Use the exported instance
 
 const RegisterForm = () => {
+  const router = useRouter(); // Get the router instance
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent default form submission behavior
+    const formData = new FormData(event.currentTarget); // Create FormData from the form
+
+    try {
+      await addUser(formData); // Call the addUser method
+      router.push("/signup-login?page=login"); // Use router.push for client-side navigation
+    } catch (error) {
+      console.error("Registration error:", error);
+    }
+  };
+
   return (
-    <form action={addUser} className="w-full max-w-xs space-y-4">
+    <form onSubmit={handleSubmit} className="w-full max-w-xs space-y-4">
       {/* Form Fields */}
       <div>
         <label className="block text-sm font-semibold text-base-content">

@@ -1,7 +1,7 @@
 // NextAuth configuration
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { getUser } from "@/services/userService"
+import {getUser} from "@/services/userService"
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -48,7 +48,9 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/signup-login",
+    signIn: "/signup-login?page=login",
+    signOut: "/signup-login?page=login",
+    newUser: "/signup-login",
   },
   session: {
     strategy: "jwt",
