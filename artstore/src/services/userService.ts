@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // src/app/api/users/addUser.ts
 "use server"
 
@@ -30,15 +31,8 @@ export async function addUser(formData: FormData) {
 }
 
 // services/userService.js
-export async function loginUser(formData: FormData) {
-    const email = formData.get("email")?.toString();
-    const password = formData.get("password")?.toString();
-  
-    // Perform validation
-    if (!email || !password) {
-      return { error: "Please fill out all fields." }; // Return error message
-    }
-  
+export async function getUser({email, password}: {email: string, password: string}) {  
+
     const user = await prisma.user.findUnique({
       where: {
         email: email,
@@ -46,24 +40,16 @@ export async function loginUser(formData: FormData) {
     });
   
     if (!user) {
-        const error = {
-            type:'userError',
-            message: "User not found."
-        }
-      return {error}; // Return error message
+        throw new Error("Invalid username or password");
     }
   
     const passwordMatch = await bcrypt.compare(password, user.password);
   
     if (!passwordMatch) {
-        const error = {
-            type:'passwordError',
-            message: "Invalid Password."
-        }
-      return {error}; // Return error message
+        throw new Error("Invalid username or password");
     }
   
     console.log("Logged in as", user.username);
-    redirect("/"); // Perform redirect on successful login
+    return user // Return user object
   }
   

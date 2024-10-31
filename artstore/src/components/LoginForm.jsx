@@ -1,24 +1,41 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
-
 import { useState } from "react"
-import { loginUser } from "@/services/userService"
+import { signIn } from "next-auth/react"
 
 const LoginForm = () => {
-  const [error, setError] = useState("") // State to store error messages
+  const [error, setError] = useState({ message: "", field: "" }) // State to store error messages
 
   const handleSubmit = async (event) => {
     event.preventDefault() // Prevent default form submission
     const formData = new FormData(event.target) // Gather form data
 
-    const result = await loginUser(formData) // Call the loginUser function
+    // Extract email and password from FormData
+    const email = formData.get("email")
+    const password = formData.get("password")
 
-    // Handle error response
-    if (result.error) {
-      setError(result.error) // Set error message from result
+    // Call NextAuth signIn function
+    const res = await signIn("credentials", {
+      redirect: false, // Do not redirect after sign-in
+      email, // Pass email
+      password, // Pass password
+    })
+
+    console.log(res)
+    if (res.error) {
+      // Determine which field the error relates to
+      if (res.error.includes("username") && res.error.includes("password")) {
+        setError({ message: res.error, field: "both" })
+      } else if (res.error.includes("username")) {
+        setError({ message: res.error, field: "username" })
+      } else if (res.error.includes("password")) {
+        setError({ message: res.error, field: "password" })
+      } else {
+        setError({ message: res.error, field: "null" })
+      }
     } else {
-      // Clear error and handle successful login (if needed)
-      setError("")
-      // You might want to perform additional actions on successful login, like redirecting
+      // Redirect to the success page (e.g., dashboard) on successful login
+      Router.push("/dashboard")
     }
   }
 
@@ -37,8 +54,8 @@ const LoginForm = () => {
         />
 
         {/* Show error message for userError, directly below the email input */}
-        {error.type === "userError" && (
-          <div className="text-red-500 text-sm">{error.message}</div>
+        {error.field === "username" && (
+          <div className="text-sm text-error">{error.message}</div>
         )}
       </div>
       <div>
@@ -54,8 +71,8 @@ const LoginForm = () => {
         />
 
         {/* Show error message for passwordError, directly below the password input */}
-        {error.type === "passwordError" && (
-          <div className="text-red-500 text-sm">{error.message}</div>
+        {error.field === "password" || error.field === "both" && (
+          <div className="text-sm text-error">{error.message}</div>
         )}
       </div>
       <button
