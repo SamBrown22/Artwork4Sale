@@ -25,9 +25,10 @@ function Sidebar({ isOpen, onClose, menuItems }: SidebarProps) {
 
       {/* Sidebar */}
       <div
-        className={`fixed right-0 top-0 h-full w-64 bg-base-200 p-6 shadow-lg transition-transform duration-500 ${
+        className={`fixed right-0 top-0 z-50 h-full p-6 shadow-lg transition-transform duration-500 bg-base-200 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
+        style={{ width: "16rem" }} // Inline width for consistent sizing
       >
         {/* Close Button */}
         <button
@@ -45,7 +46,7 @@ function Sidebar({ isOpen, onClose, menuItems }: SidebarProps) {
               <Image
                 src={session.user.image}
                 alt="Profile"
-                layout="fill" // This will make the image fill its parent container
+                layout="fill" // Makes the image cover the container
                 className="object-cover"
                 priority
               />
