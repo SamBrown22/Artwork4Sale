@@ -83,7 +83,7 @@ export async function addImageToProfile(email: string, file: ImageInput) {
   }
 
   // Upload the new image
-  const imageUrl = await s3Service.uploadImage(file); // Pass the file object directly
+  const imageUrl = await s3Service.uploadImage(file, 'user_profiles'); // Pass the file object directly
 
   // Update the user's profile in the database with the new image URL
   const updatedUser = await prisma.user.update({

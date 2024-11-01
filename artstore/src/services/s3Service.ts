@@ -26,14 +26,14 @@ class S3Service {
     });
   }
 
-  async uploadImage(file: ImageInput): Promise<string> {
+  async uploadImage(file: ImageInput, directory: string): Promise<string> {
     const imageBuffer = Buffer.from(file.buffer, "base64");
     const uniqueId = uuidv4();
     const sanitizedFileName = `${uniqueId}_${file.name.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9\-\.]/g, "")}`;
 
     const params = {
       Bucket: this.bucketName,
-      Key: `user_profiles/${sanitizedFileName}`,
+      Key: `${directory}/${sanitizedFileName}`,
       Body: imageBuffer,
       ContentType: file.type,
     };
@@ -41,7 +41,7 @@ class S3Service {
     try {
       const command = new PutObjectCommand(params);
       await this.s3.send(command);
-      return `https://${this.bucketName}.s3.${this.region}.amazonaws.com/user_profiles/${sanitizedFileName}`;
+      return `https://${this.bucketName}.s3.${this.region}.amazonaws.com/${directory}/${sanitizedFileName}`;
     } catch (error) {
       console.error("Error uploading image:", error);
       throw new Error("Error uploading image");

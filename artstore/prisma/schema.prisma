@@ -16,17 +16,25 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  // Foreign key to link the Product to a User
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @db.ObjectId
+
   @@map("products")
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  username  String   @unique
-  email     String   @unique
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  username  String     @unique
+  email     String     @unique
   password  String
   image     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // Array of products to create the one-to-many relationship
+  products  Product[]
 
   @@map("users")
 }
+

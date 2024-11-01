@@ -1,7 +1,7 @@
 // NextAuth configuration
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import {getUser} from "@/services/userService"
+import { getUser } from "@/services/userService"
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -55,13 +55,15 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
+    maxAge: 60 * 60, // 1 hour
   },
   callbacks: {
-    async jwt({token, user, session, trigger}){
-      if (trigger === "update" && session?.image){
-        token.image = session.image;
+    async jwt({ token, user, session, trigger }) {
+      if (trigger === "update" && session?.image) {
+        token.image = session.image
       }
 
+      //console.log("Token: ", token)
       // pass in user id and image to token
       if (user) {
         return {
@@ -70,19 +72,25 @@ export const authOptions: NextAuthOptions = {
           image: user.image,
         }
       }
-      return token;
+      return token
     },
-    async session({session, token}){ 
-      // pass in user id and image to session
-      return {
+    async session({ session, token }) {
+      // Log the session before modifying them
+      // console.log("Original Session: ", session);
+
+      // Pass in user id and image to session
+      const updatedSession = {
         ...session,
         user: {
           ...session.user,
           id: token.id,
           image: token.image as string | null | undefined,
         },
-      };
-      return session;
-    } 
+      }
+
+      // Log the updated session before returning
+      //console.log("Updated Session: ", updatedSession);
+      return updatedSession
+    },
   },
 }
