@@ -1,33 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { addImageToProfile, getImageFromProfile } from "@/services/userService";
+import { addImageToProfile } from "@/services/userService";
 import { ImageInput } from "@/types/ImageInput";
 import Image from "next/image";
 
 const ProfilePicture: React.FC = () => {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const fetchProfileImage = async () => {
-      if (session?.user?.email) {
-        try {
-          const imageBase64 = await getImageFromProfile(session.user.email);
-          setImageUrl(imageBase64);
-        } catch (error) {
-          console.error("Error retrieving image:", error);
-          setErrorMessage("Error retrieving profile image.");
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setLoading(false);
-      }
-    };
+  const isFetched = React.useRef(false);
 
-    fetchProfileImage();
+  useEffect(() => {
+    if (session?.user?.image && !isFetched.current) {
+      isFetched.current = true;
+      setImageUrl(session.user.image);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
   }, [session]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,9 +50,11 @@ const ProfilePicture: React.FC = () => {
         };
 
         try {
-          const uploadedImageUrl = await addImageToProfile(userEmail, fileInput);
-          console.log("Updated User:", uploadedImageUrl);
-          setImageUrl(base64String);
+          const updatedUser = await addImageToProfile(userEmail, fileInput);
+          console.log("Updated User:", updatedUser);
+          setImageUrl(updatedUser.image);
+
+          await update({ image: updatedUser.image });
           setErrorMessage(null);
         } catch (error) {
           console.error("Error uploading image:", error);
@@ -90,8 +84,10 @@ const ProfilePicture: React.FC = () => {
             <Image 
               src={imageUrl} 
               alt="Profile" 
-              fill // Use the fill prop instead of layout
-              className="rounded-full object-cover" // Ensure the image is rounded and cover
+              fill 
+              className="rounded-full object-cover"
+              sizes="(max-width: 600px) 100px, (max-width: 1200px) 80px, 60px" // Set appropriate sizes
+              priority
             />
           ) : (
             <div className="w-full h-full bg-gray-300 rounded-full"></div>

@@ -27,6 +27,7 @@ export const authOptions: NextAuthOptions = {
                 id: res.id,
                 name: res.username,
                 email: res.email,
+                image: res.image,
               }
             } else {
               console.log("User not found")
@@ -54,5 +55,34 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({token, user, session, trigger}){
+      if (trigger === "update" && session?.image){
+        token.image = session.image;
+      }
+
+      // pass in user id and image to token
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+          image: user.image,
+        }
+      }
+      return token;
+    },
+    async session({session, token}){ 
+      // pass in user id and image to session
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          image: token.image as string | null | undefined,
+        },
+      };
+      return session;
+    } 
   },
 }

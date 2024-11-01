@@ -4,35 +4,31 @@ import React, { useState } from "react"
 import { useSession, signOut } from "next-auth/react"
 import ThemeButton from "./ThemeButton"
 import Sidebar from "./Sidebar"
+import Image from "next/image"
 
-// Define navigation items with visibility rules
 const navigation = [
-  { name: "Home", href: "/", alwaysVisible: true }, // Always visible
-  { name: "Add Product", href: "/add-product", loggedInOnly: true }, // Visible only when logged in
-  { name: "Login", href: "/signup-login", loggedOutOnly: true }, // Visible only when logged out
-  {name: 'My Profile', href: '/myProfile', loggedInOnly: true}, // Visible only when logged in
-  { name: "Logout", href: "/", loggedInOnly: true, action: "logout" }, // Visible only when logged in and triggers logout
+  { name: "Home", href: "/", alwaysVisible: true },
+  { name: "Add Product", href: "/add-product", loggedInOnly: true },
+  { name: "Login", href: "/signup-login", loggedOutOnly: true },
+  { name: "My Profile", href: "/myProfile", loggedInOnly: true },
+  { name: "Logout", href: "/", loggedInOnly: true, action: "logout" },
 ]
 
 function Taskbar() {
-  const [isOpen, setIsOpen] = useState(false) // State to manage the sidebar menu visibility
-  const { data: session } = useSession() // Access the user session information
+  const [isOpen, setIsOpen] = useState(false)
+  const { data: session } = useSession()
 
-  // Function to render navigation items based on session status
   const renderMenuItems = () =>
     navigation
-      // Filter items based on session status and visibility rules
       .filter(
         (item) =>
-          item.alwaysVisible || // Always show items with `alwaysVisible: true`
-          (item.loggedInOnly && session) || // Show items marked `loggedInOnly` if the user is logged in
-          (item.loggedOutOnly && !session), // Show items marked `loggedOutOnly` if the user is logged out
+          item.alwaysVisible ||
+          (item.loggedInOnly && session) ||
+          (item.loggedOutOnly && !session),
       )
-      // Map over filtered items to generate the JSX for each menu item
       .map((item) => (
-        <li key={item.name} className="p-2">
+        <li key={item.name}>
           {item.action === "logout" ? (
-            // Render logout button and perform signOut action when clicked
             <button
               onClick={() => signOut({ callbackUrl: item.href })}
               className="btn btn-ghost w-full rounded-lg"
@@ -40,7 +36,6 @@ function Taskbar() {
               {item.name}
             </button>
           ) : (
-            // Render standard navigation link for all other items
             <a href={item.href} className="btn btn-ghost w-full rounded-lg">
               {item.name}
             </a>
@@ -51,23 +46,38 @@ function Taskbar() {
   return (
     <div className="taskbar max-h-24 min-h-20 bg-base-300 p-4 shadow-md">
       <nav className="flex items-center justify-between">
-        {/* Left side of the taskbar - ThemeButton and App Title */}
         <div className="flex items-center">
           <ThemeButton />
           <h1 className="ml-2 text-xl font-bold">Artwork4Sale</h1>
         </div>
 
-        {/* Desktop menu - displays items horizontally on large screens */}
-        <ul className="menu menu-horizontal hidden p-0 lg:flex">
-          {renderMenuItems()}
-        </ul>
+        <div className="flex items-center me-6">
+          {/* Menu items for larger screens */}
+          <ul className="menu menu-horizontal hidden p-0 lg:flex">
+            {renderMenuItems()}
+          </ul>
 
-        {/* Mobile sidebar button - toggles sidebar visibility */}
+          {/* Profile Picture Section */}
+          {session && session.user?.image && (
+            <div
+              className={`relative ml-4 hidden h-12 w-12 overflow-hidden rounded-full lg:block`}
+            >
+              <Image
+                src={session.user.image}
+                alt="Profile"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Hamburger menu button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="btn btn-ghost rounded-lg lg:hidden"
         >
-          {/* Icon for the mobile menu button */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-8 w-8"
@@ -84,7 +94,7 @@ function Taskbar() {
           </svg>
         </button>
 
-        {/* Sidebar component for mobile menu - displays items vertically */}
+        {/* Sidebar */}
         <Sidebar
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}

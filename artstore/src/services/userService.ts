@@ -94,19 +94,3 @@ export async function addImageToProfile(email: string, file: ImageInput) {
   return updatedUser;
 }
 
-export async function getImageFromProfile(email: string): Promise<string> {
-  // Find the user by email
-  const user = await prisma.user.findUnique({
-    where: { email: email },
-  });
-
-  if (!user || !user.image) {
-    throw new Error("User not found or no image available");
-  }
-
-  // Retrieve the image from S3 using the URL stored in the user's profile
-  const imageBuffer = await s3Service.retrieveImage(user.image); // Pass the image URL
-  return imageBuffer; // Return the image Base64 string
-}
-
-
