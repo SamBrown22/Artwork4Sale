@@ -150,7 +150,7 @@ export default function AddProductPage() {
               name="image"
               type="file"
               accept="image/*"
-              className="file-input file-input-bordered mb-3 w-full cursor-pointer"
+              className="file-input file-input-bordered file-input-base-content mb-3 w-full cursor-pointer"
               onChange={handleImageChange} // Handle image changes
             />
           </div>
