@@ -21,7 +21,7 @@ export async function addProduct({name, description, price, imageData, userId}:
       name: name,
       description: description,
       imageUrl: imageUrl,
-      price: price,
+      priceInCents: price,
       user: { connect: { id: userId }}
     },
   })
@@ -29,11 +29,21 @@ export async function addProduct({name, description, price, imageData, userId}:
   redirect("/")
 }
 
-export async function getProducts(userId: string) {
+type SortOrder = 'createdAt' | 'relevance' | 'priceInCents';  // Add any other fields you'd like to sort by
+
+export async function getProducts(
+  userId: string | undefined,  // Make userId optional
+  batchSize: number,
+  page: number,
+  sortBy: SortOrder = 'createdAt', // Default to createdAt
+  sortOrder: 'asc' | 'desc'  // Ascending or descending
+) {
   const products = await prisma.product.findMany({
-    where: { userId: userId },
-  })
+    where: userId ? { userId } : undefined,  // Apply userId filter only if userId is defined
+    orderBy: { [sortBy]: sortOrder },  // Dynamically set orderBy field
+    take: batchSize,
+    skip: batchSize * (page - 1),
+  });
 
-  return products
-
+  return products;
 }
