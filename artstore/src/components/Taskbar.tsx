@@ -8,8 +8,9 @@ import Image from "next/image"
 
 const navigation = [
   { name: "Home", href: "/", alwaysVisible: true },
-  { name: "My Products", href: "/my-products", loggedInOnly: true },
   { name: "Login", href: "/signup-login", loggedOutOnly: true },
+  { name: "My Products", href: "/my-products", loggedInOnly: true },
+  { name: "My Cart", href: "/myCart", loggedInOnly: true},
   { name: "My Profile", href: "/myProfile", loggedInOnly: true },
   { name: "Logout", href: "/", loggedInOnly: true, action: "logout" },
 ]

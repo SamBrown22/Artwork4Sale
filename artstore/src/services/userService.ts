@@ -28,7 +28,11 @@ export async function addUser(formData: FormData) {
       username: username,
       email: email,
       password: hashedPassword,
-      image: defaultProfileImage
+      image: defaultProfileImage,
+      cart: {
+        create: {
+        },
+      }
     },
   })
 }

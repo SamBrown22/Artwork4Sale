@@ -47,12 +47,12 @@ export default function ProductCard({ product, link }: ProductCardProps) {
       <div className="mt-2 flex items-center text-sm text-content">
         {/* Display artist image if available */}
         {product.artist?.image && (
-          <div className="mr-2 flex-shrink-0">
+          <div className="mr-2 flex-shrink-0 relative h-6 w-6">
             <Image
               src={product.artist.image || "/placeholder.png"}
               alt={`${product.artist.username}'s profile`}
-              width={24}
-              height={24}
+              layout="fill"
+              objectFit="cover" // Ensures the image is cropped to fit the circle
               className="rounded-full"
             />
           </div>
