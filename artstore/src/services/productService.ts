@@ -22,7 +22,7 @@ export async function addProduct({name, description, price, imageData, userId}:
       description: description,
       imageUrl: imageUrl,
       priceInCents: price,
-      user: { connect: { id: userId }}
+      artist: { connect: { id: userId }}
     },
   })
 

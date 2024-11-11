@@ -7,33 +7,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  description  String
-  imageUrl     String
-  name         String
-  priceInCents Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  // Foreign key to link the Product to a User
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @db.ObjectId
-
-  @@map("products")
-}
-
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   username  String   @unique
   email     String   @unique
   password  String
   image     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  products  Product[] // List of products created by the user
+  cart      Cart?    // One-to-one relationship with a cart
 
-  // Array of products to create the one-to-many relationship
-  products Product[]
 
   @@map("users")
+}
+
+model Product {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  description  String
+  imageUrl     String
+  priceInCents Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  cart         Cart?    @relation(fields: [cartId], references: [id]) // Each product can belong to one cart at most
+  cartId       String?  @db.ObjectId
+
+  artist User @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
+
+  @@map("products")
+}
+
+model Cart {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @unique @db.ObjectId // Ensure one-to-one relationship with a user
+  user      User     @relation(fields: [userId], references: [id])
+  products  Product[] // List of products in the cart
+
+  @@map("carts")
 }
