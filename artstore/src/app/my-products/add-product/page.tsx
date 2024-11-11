@@ -25,6 +25,8 @@ interface PreviewData {
 export default function AddProductPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const [pounds, setPounds] = useState<string>("")
+  const [pennies, setPennies] = useState<string>("")
   const [previewData, setPreviewData] = useState<PreviewData>({
     name: "Product Name",
     description: "Product Description",
@@ -85,6 +87,39 @@ export default function AddProductPage() {
     }))
   }
 
+  const handlePoundFieldChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { value } = event.target
+    const poundsValue = value.replace(/[^0-9]/g, "") // Remove non-numeric characters
+    setPounds(poundsValue) // Update pounds
+
+    // Update preview data with total price (pounds * 100 + pennies)
+    setPreviewData((prevData) => ({
+      ...prevData,
+      price: Number(poundsValue) * 100 + Number(pennies || 0),
+    }))
+  }
+
+  const handlePennyFieldChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { value } = event.target
+    let penniesValue = value.replace(/[^0-9]/g, "") // Remove non-numeric characters
+
+    if (parseInt(penniesValue) > 99) {
+      penniesValue = "99" // Limit the value to 99
+    }
+
+    setPennies(penniesValue) // Update pennies
+
+    // Update preview data with total price (pounds * 100 + pennies)
+    setPreviewData((prevData) => ({
+      ...prevData,
+      price: Number(pounds || 0) * 100 + Number(penniesValue),
+    }))
+  }
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
 
@@ -130,15 +165,36 @@ export default function AddProductPage() {
             className="textarea textarea-bordered mb-3 w-full"
             onChange={handleFieldChange} // Handle input changes
           />
-          {/* Price Input */}
-          <input
-            required
-            name="price"
-            placeholder="Price"
-            type="number"
-            className="input input-bordered mb-3 w-full"
-            onChange={handleFieldChange} // Handle input changes
-          />
+          <div className="flex items-center space-x-2">
+            {/* Pound Symbol */}
+            <span className="text-lg font-medium">£</span>
+
+            {/* Pound Input */}
+            <input
+              required
+              name="price"
+              placeholder="Pounds"
+              type="text"
+              className="input input-bordered mb-3 w-2/3"
+              value={pounds}
+              onChange={handlePoundFieldChange} // Handle input changes
+            />
+
+            {/* Decimal Separator */}
+            <span className="text-lg font-medium">.</span>
+
+            {/* Penny Input */}
+            <input
+              required
+              name="price"
+              placeholder="Pennies"
+              type="text"
+              className="input input-bordered mb-3 w-1/3"
+              value={pennies}
+              onChange={handlePennyFieldChange} // Handle input changes
+            />
+          </div>
+
           {/* Upload Image File Input */}
           <div className="mb-3 w-full">
             <label className="mb-1 block text-sm font-medium" htmlFor="image">
@@ -150,10 +206,11 @@ export default function AddProductPage() {
               name="image"
               type="file"
               accept="image/*"
-              className="file-input file-input-bordered file-input-base-content mb-3 w-full cursor-pointer"
+              className="file-input-base-content file-input file-input-bordered mb-3 w-full cursor-pointer"
               onChange={handleImageChange} // Handle image changes
             />
           </div>
+
           {/* Submit Button */}
           <button
             className="btn btn-primary btn-block text-white"
