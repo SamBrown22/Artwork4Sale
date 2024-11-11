@@ -7,17 +7,7 @@ import Link from "next/link";
 import { getProducts } from "@/services/productService";
 import { useSession } from "next-auth/react";
 import ProductCard from "@/components/ProductCard"; // Import ProductCard
-
-type Product = {
-  id: string;
-  description: string;
-  imageUrl: string;
-  name: string;
-  price: number;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-};
+import { Product } from "@/types/Product";
 
 export default function MyProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -43,7 +33,7 @@ export default function MyProductsPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
         {products.length > 0 ? (
           products.map((product) => (
-            <ProductCard key={product.id} product={product} /> // Use ProductCard component
+            <ProductCard key={product.id} product={product} link={true}/> // Use ProductCard component
           ))
         ) : (
           <p>No products added yet.</p>

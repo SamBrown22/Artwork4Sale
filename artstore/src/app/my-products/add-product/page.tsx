@@ -23,17 +23,18 @@ interface PreviewData {
 }
 
 export default function AddProductPage() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
-  const [pounds, setPounds] = useState<string>("")
-  const [pennies, setPennies] = useState<string>("")
-  const [previewData, setPreviewData] = useState<PreviewData>({
+  const maxLength = 500 // Maxcharacter length used for the description
+  const { data: session, status } = useSession() // Used to get session data and status
+  const router = useRouter() // Used to redirect the user uasing router.push()
+  const [pounds, setPounds] = useState<string>("") // Used to store the pounds value
+  const [pennies, setPennies] = useState<string>("") // used to store the pennies value
+  const [previewData, setPreviewData] = useState<PreviewData>({ // Used to store and initialise the preview data
     name: "Product Name",
-    description: "Product Description",
+    description: "",
     price: 0,
-    imageUrl: "/placeholder.png", // Placeholder image initially
+    imageUrl: "/placeholder.png",
   })
-  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null) // Used to store the image file
 
   if (status === "loading") {
     return <div>Loading...</div>
@@ -83,7 +84,7 @@ export default function AddProductPage() {
 
     setPreviewData((prevData) => ({
       ...prevData,
-      [name]: name === "price" ? Number(value) : value, // Convert price to a number
+      [name]: value
     }))
   }
 
@@ -157,14 +158,24 @@ export default function AddProductPage() {
             className="input input-bordered mb-3 w-full"
             onChange={handleFieldChange} // Handle input changes
           />
-          {/* Product Description Textarea */}
+
+          <div className="mb-3">
+            {/* Product Description Textarea */}
           <textarea
             required
             name="description"
             placeholder="Description"
-            className="textarea textarea-bordered mb-3 w-full"
+            className="textarea textarea-bordered w-full"
+            maxLength={maxLength}
             onChange={handleFieldChange} // Handle input changes
+            value={previewData.description}
           />
+            {/* Character count */}
+            <div className="text-sm text-gray-400 text-right">
+              {previewData.description.length} / {maxLength} characters
+            </div>
+          </div>
+
           <div className="flex items-center space-x-2">
             {/* Pound Symbol */}
             <span className="text-lg font-medium">£</span>
@@ -236,6 +247,7 @@ export default function AddProductPage() {
                 image: session?.user?.image || "/placeholder.png", // Use the session user's image or a placeholder
               },
             }}
+            link={false} // Don't link to the product page
           />
         </div>
       </div>

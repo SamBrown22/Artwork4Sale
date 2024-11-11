@@ -1,24 +1,15 @@
 // src/components/ProductCard.tsx
 
 import Image from "next/image";
-
-type Product = {
-  id: string;
-  name: string;
-  description: string;
-  imageUrl: string;
-  priceInCents: number;
-  artist?: {
-    username?: string; // Artist's username
-    image?: string; // Artist's profile image
-  };
-};
+import { Product } from "@/types/Product";
+import Link from "next/link";
 
 interface ProductCardProps {
   product: Product;
+  link: boolean;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, link }: ProductCardProps) {
   return (
     <div
       key={product.id}
@@ -36,15 +27,24 @@ export default function ProductCard({ product }: ProductCardProps) {
           £{product.priceInCents / 100}
         </span>
       </div>
-      <h2 className="mt-2 text-xl font-bold">{product.name}</h2>
+
+      {/* Conditionally render the heading as a link */}
+      {link ? (
+        <Link href={`/product/${product.id}`}>
+          <h2 className="mt-2 text-xl font-bold hover:underline">{product.name}</h2>
+        </Link>
+      ) : (
+        <h2 className="mt-2 text-xl font-bold">{product.name}</h2>
+      )}
+
       <div className="flex-grow h-20">
-        <p className="mt-1 line-clamp-3 text-gray-700">
+        <p className="mt-1 line-clamp-3 text-gray-600">
           {product.description}
         </p>
       </div>
 
       {/* Artist Username Section */}
-      <div className="mt-2 flex items-center text-sm text-gray-300">
+      <div className="mt-2 flex items-center text-sm text-content">
         {/* Display artist image if available */}
         {product.artist?.image && (
           <div className="mr-2 flex-shrink-0">

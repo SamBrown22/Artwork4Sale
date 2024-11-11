@@ -6,17 +6,7 @@ import HeroSection from "@/components/HeroSection";
 import { useEffect, useState } from "react";
 import { getProducts } from "@/services/productService";
 import ProductCard from "@/components/ProductCard"; // Import the ProductCard component
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  imageUrl: string;
-  priceInCents: number;
-  artist: {
-    username: string;
-  };
-}
+import { Product } from "@/types/Product";
 
 interface SortOption {
   label: string;
@@ -89,7 +79,7 @@ export default function Home() {
             <p className="text-red-500 text-lg">{error}</p>
           ) : (
             products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} link={true}/>
             ))
           )}
         </div>

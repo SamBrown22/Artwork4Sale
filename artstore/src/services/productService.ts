@@ -6,6 +6,8 @@ import S3Service from "@/services/s3Service"
 import { ImageInput } from "@/types/ImageInput"
 
 const s3Service = new S3Service()
+type SortOrder = 'createdAt' | 'relevance' | 'priceInCents';  // Add any other fields you'd like to sort by
+
 
 export async function addProduct({name, description, price, imageData, userId}: 
 {name: string, description: string, price: number, imageData: ImageInput, userId: string}) {
@@ -29,7 +31,18 @@ export async function addProduct({name, description, price, imageData, userId}:
   redirect("/")
 }
 
-type SortOrder = 'createdAt' | 'relevance' | 'priceInCents';  // Add any other fields you'd like to sort by
+export async function getProduct(id: string) {
+  const product = await prisma.product.findUnique({
+    where: { id },
+    include: { artist: {
+      select: {
+        username: true,
+        image: true
+      }} }
+  });
+
+  return product;
+}
 
 export async function getProducts(
   artistId: string | undefined,  // Make artistId optional
