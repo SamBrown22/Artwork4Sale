@@ -1,17 +1,21 @@
 // src/components/ProductCard.tsx
 
-import Image from "next/image"
+import Image from "next/image";
 
 type Product = {
-  id: string
-  name: string
-  description: string
-  imageUrl: string
-  priceInCents: number
-}
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  priceInCents: number;
+  artist?: {
+    username?: string; // Artist's username
+    image?: string; // Artist's profile image
+  };
+};
 
 interface ProductCardProps {
-  product: Product
+  product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
@@ -33,13 +37,28 @@ export default function ProductCard({ product }: ProductCardProps) {
         </span>
       </div>
       <h2 className="mt-2 text-xl font-bold">{product.name}</h2>
-      <div className="flex-grow">
-        <p className="mt-1 line-clamp-4 h-20 overflow-hidden text-gray-700">
-          {" "}
-          {/* Adjust height as needed */}
+      <div className="flex-grow h-20">
+        <p className="mt-1 line-clamp-3 text-gray-700">
           {product.description}
         </p>
       </div>
+
+      {/* Artist Username Section */}
+      <div className="mt-2 flex items-center text-sm text-gray-300">
+        {/* Display artist image if available */}
+        {product.artist?.image && (
+          <div className="mr-2 flex-shrink-0">
+            <Image
+              src={product.artist.image || "/placeholder.png"}
+              alt={`${product.artist.username}'s profile`}
+              width={24}
+              height={24}
+              className="rounded-full"
+            />
+          </div>
+        )}
+        <span className="font-medium">{product?.artist?.username || 'Unknown'}</span>
+      </div>
     </div>
-  )
+  );
 }

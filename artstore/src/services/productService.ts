@@ -32,17 +32,22 @@ export async function addProduct({name, description, price, imageData, userId}:
 type SortOrder = 'createdAt' | 'relevance' | 'priceInCents';  // Add any other fields you'd like to sort by
 
 export async function getProducts(
-  userId: string | undefined,  // Make userId optional
+  artistId: string | undefined,  // Make artistId optional
   batchSize: number,
   page: number,
   sortBy: SortOrder = 'createdAt', // Default to createdAt
   sortOrder: 'asc' | 'desc'  // Ascending or descending
 ) {
   const products = await prisma.product.findMany({
-    where: userId ? { userId } : undefined,  // Apply userId filter only if userId is defined
+    where: artistId ? { artistId } : undefined,  // Apply artistId filter only if artistId is defined
     orderBy: { [sortBy]: sortOrder },  // Dynamically set orderBy field
     take: batchSize,
     skip: batchSize * (page - 1),
+    include: { artist: {
+      select: {
+        username: true,
+        image: true
+      }} }
   });
 
   return products;

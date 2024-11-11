@@ -13,6 +13,9 @@ interface Product {
   description: string;
   imageUrl: string;
   priceInCents: number;
+  artist: {
+    username: string;
+  };
 }
 
 interface SortOption {
@@ -36,7 +39,6 @@ export default function Home() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        console.log(sortBy);
         const fetchedProducts = await getProducts(undefined, 16, 1, sortBy.value, sortBy.type); // Use sortBy properties
         setProducts(fetchedProducts);
       } catch (err) {

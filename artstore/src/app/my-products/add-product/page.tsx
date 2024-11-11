@@ -231,6 +231,10 @@ export default function AddProductPage() {
               description: previewData.description,
               imageUrl: previewData.imageUrl, // Use the preview image
               priceInCents: previewData.price, // Format price to 2 decimal places for display
+              artist: {
+                username: session?.user?.name || "Unknown Artist", // Use the session user's name or a placeholder
+                image: session?.user?.image || "/placeholder.png", // Use the session user's image or a placeholder
+              },
             }}
           />
         </div>
