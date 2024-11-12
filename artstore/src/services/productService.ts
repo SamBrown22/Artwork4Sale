@@ -65,3 +65,9 @@ export async function getProducts(
 
   return products;
 }
+
+export async function getAmountOfProducts(): Promise<number> {
+  console.log(prisma.product.count())
+  return prisma.product.count();
+}
+
