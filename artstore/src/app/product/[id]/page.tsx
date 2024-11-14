@@ -7,6 +7,7 @@ import { Product } from "@/types/Product"
 import { use } from "react"
 import { addProductToCart, isProductInCart } from "@/services/cartService"
 import { useSession } from "next-auth/react"
+import { toast } from "react-toastify"
 
 interface ProductPageProps {
   params: Promise<{ id: string }> // params is now a Promise
@@ -41,10 +42,22 @@ export default function ProductPage({ params }: ProductPageProps) {
   }, [id, session])
 
   function addToCart() {
-    if (product && session) {
-      const res = addProductToCart(product.id, session.user.id)
-      setInCart(true)
-      console.log(res)
+    // Checks if the product and session exist
+    if (product && session && product.artist) {
+      
+      // Checks if the user is not the artist
+      if (session.user.name !== product.artist.username) {
+
+        // Adds the product to the cart
+        const res = addProductToCart(product.id, session.user.id)
+        setInCart(true)
+        console.log(res)
+      } else {
+        toast.error("You cannot add your own product to the cart", {
+          className: "bg-primary",
+          autoClose: 5000,
+        })
+      }
     } else {
       console.error("Product not found")
     }
