@@ -11,4 +11,6 @@ export type Product = {
       username: string;
       image: string | null;
     };
+    sold: boolean;
+    soldAt?: Date;
   };

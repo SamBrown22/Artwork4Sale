@@ -8,42 +8,43 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  username  String   @unique
-  email     String   @unique
-  password  String
-  image     String?
-  products  Product[] // List of products created by the user
-  cart      Cart?    // One-to-one relationship with a cart
-
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  username String    @unique
+  email    String    @unique
+  password String
+  image    String?
+  products Product[] // List of products created by the user
+  cart     Cart? // One-to-one relationship with a cart
 
   @@map("users")
 }
 
 model Product {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   description  String
   imageUrl     String
   priceInCents Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime  @default(now())
+  sold         Boolean   @default(false) // True if the product has been sold
+  soldAt       DateTime? // Date when the product was sold
+  updatedAt    DateTime  @updatedAt
 
-  cart         Cart?    @relation(fields: [cartId], references: [id]) // Each product can belong to one cart at most
-  cartId       String?  @db.ObjectId
+  cart   Cart?   @relation(fields: [cartId], references: [id]) // Each product can belong to one cart at most
+  cartId String? @db.ObjectId
 
-  artist User @relation(fields: [artistId], references: [id])
+  artist   User   @relation(fields: [artistId], references: [id])
   artistId String @db.ObjectId
 
   @@map("products")
 }
 
 model Cart {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    String   @unique @db.ObjectId // Ensure one-to-one relationship with a user
-  user      User     @relation(fields: [userId], references: [id])
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  userId    String    @unique @db.ObjectId // Ensure one-to-one relationship with a user
+  user      User      @relation(fields: [userId], references: [id])
   products  Product[] // List of products in the cart
 
   @@map("carts")
