@@ -5,9 +5,9 @@ import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Product } from "@/types/Product"
-import { getCartByUserId } from "@/services/cartService" // Ensure this service function exists
-import { deleteProductFromCart } from "@/services/cartService" // Ensure this service function exists
+import { getCartByUserId, deleteProductFromCart, buyCart } from "@/services/cartService" // Ensure buyCart service function exists
 import CartProductCard from "@/components/CartProductCard"
+import { toast } from "react-toastify"
 
 export default function MyCartPage() {
   const { data: session, status } = useSession()
@@ -51,6 +51,26 @@ export default function MyCartPage() {
     }
   }
 
+  async function handleBuyCart() {
+    if (session) {
+      try {
+        await buyCart(session.user.id)
+        toast.success("Purchase successful!")
+        setCartProducts([]); // Clear the cart after purchase
+      } catch (err) {
+        if (err instanceof Error) {
+          toast.error(err.message)
+        } else {
+          toast.error("An unknown error occurred.")
+        }
+      }
+    }
+  }
+
+  function calculateTotal() {
+    return cartProducts.reduce((total, product) => total + product.priceInCents/100, 0)
+  }
+
   if (loading) return <p className="text-center text-lg">Loading...</p>
   if (error) return <p className="text-center text-lg text-red-600">{error}</p>
 
@@ -68,6 +88,13 @@ export default function MyCartPage() {
               onDelete={() => deleteProduct(product)}
             />
           ))}
+          <div className="mt-4 text-lg font-semibold">Total: ${calculateTotal()}</div>
+          <button
+            onClick={handleBuyCart}
+            className="mt-4 w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
+          >
+            Buy Cart
+          </button>
         </div>
       )}
     </div>

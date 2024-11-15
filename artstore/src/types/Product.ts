@@ -12,5 +12,5 @@ export type Product = {
       image: string | null;
     };
     sold: boolean;
-    soldAt?: Date;
+    soldAt?: Date | null;
   };
